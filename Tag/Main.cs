@@ -96,6 +96,9 @@ namespace Demo
 			if(innerTags.Count()==0 && content==null) 
 			{
 				tagHtml.Append("/>");
+				foreach(var nextTag in siblingTags) 	
+					tagHtml.Append(nextTag.ToString());	
+
 				return tagHtml.ToString();
 			}
 
@@ -127,7 +130,7 @@ namespace Demo
 	}
 
     class DemoApp
-    {	
+    {		
         static void Main (string[] args)
 		{		
 			//- creating an simple A link, with id and class
@@ -150,8 +153,8 @@ namespace Demo
 
 			//- creating two sibling breaks
 
-			var sample4 = new Tag("br");
-			sample4 += new Tag("br");
+			var sample4 = new Tag("adasd");
+			sample4 += new Tag("asdsdassad");
 
 			Console.WriteLine (sample4);
 
