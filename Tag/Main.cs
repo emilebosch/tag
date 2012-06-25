@@ -73,7 +73,7 @@ namespace Demo
 		{
 		}
 
-		public void Attr(string name, object value) 
+		public Tag Attr(string name, object value) 
 		{
 			if(value!=null) 
 			{
@@ -82,6 +82,7 @@ namespace Demo
 				else
 					Attrs[name]=value.ToString();
 			}
+			return this;
 		}
 
 		public override string ToString ()
@@ -131,17 +132,24 @@ namespace Demo
 
     class DemoApp
     {		
+		static void Dump(Tag t) 
+		{
+			Console.WriteLine (t);
+		}
+
         static void Main (string[] args)
 		{		
 			//- creating an simple A link, with id and class
 
 			var sample1 = new Tag("a","Click for oblivion!", href:"http://somewhere/far/away", id:"starlink", @class:"starred");
-			Console.WriteLine (sample1);
+
+			Dump(sample1);
 
 			//- the same thing but now via shorthand - the . denotes an class and the # a id
 
 			var sample2 = new Tag("a.starlink#starred","Click for oblivion!", href:"http://somewhere/far/away");
-			Console.WriteLine (sample2);
+
+			Dump(sample2);
 
 			//- creating an UL with child LI
 
@@ -149,25 +157,27 @@ namespace Demo
 			    new Tag("li", "Look im an li!", @class:"hello", id:"hello"),
 				new Tag("li", "Look im another li!", @class:"awesome"));
 
-			Console.WriteLine (sample3);
+			Dump(sample3);
 
 			//- creating two sibling breaks
 
-			var sample4 = new Tag("adasd");
-			sample4 += new Tag("asdsdassad");
+			var sample4 = new Tag("br");
+			sample4 += new Tag("br");
 
-			Console.WriteLine (sample4);
+			Dump(sample4);
 
 			// doing the same thing but lazy via string implicit string conversion
 
-			Tag sample5 = "br"; 
-			sample5 += "br";
-			sample5 += (Tag)"hr.rainbow"+(Tag)"hr.doublerainbow";
+			Tag sample5 = "hr"; 
+			sample5 += "hr";
+			sample5 += (Tag)"hr.rainbow" + (Tag)"hr.doublerainbow";
 
-			//- or
+			Dump(sample5);
 
-			var sample6 = (Tag)"hr.pretty#main";
-			Console.WriteLine (sample6);
+			//- or create a image with class pretty and id main, and set the src to google and add a rainbow
+
+			var sample6 = ((Tag)"img.pretty#main").Attr("src","http://www.lolcats.com") + "hr.rainbow";
+			Dump(sample6);
 	
 			//- some more samples
 
@@ -192,7 +202,7 @@ namespace Demo
 			                select 
 			                	new Tag("li",stimulant, @class:(stimulant=="Crack"?"illegal":"ok")));
 	
-			Console.WriteLine (html.ToString());
+			Dump(html);
 		}
 	}
 }
