@@ -33,6 +33,9 @@ namespace Demo
 
 			//Split shorthand
 
+			if(this.tag[0]=='.'||this.tag[0]=='#') 
+				this.tag = "div"+this.tag;
+	
 			var split = this.tag.Split (new char[] {'#'}, 2);
 			if (split.Length > 1) 
 			{
@@ -48,7 +51,6 @@ namespace Demo
 			}
 
 			this.content = content;
-
 			Attr("name"		,name);
 			Attr("type"		,type);
 			Attr("class"	,@class);
@@ -141,53 +143,53 @@ namespace Demo
 		{		
 			//- creating an simple A link, with id and class
 
-			var sample1 = new Tag("a","Click for oblivion!", href:"http://somewhere/far/away", id:"starlink", @class:"starred");
+			var link = new Tag("a","Click for oblivion!", href:"http://somewhere/far/away", id:"starlink", @class:"starred");
 
-			Dump(sample1);
+			Dump(link);
 
 			//- the same thing but now via shorthand - the . denotes an class and the # a id
 
-			var sample2 = new Tag("a.starlink#starred","Click for oblivion!", href:"http://somewhere/far/away");
+			var linkshorthand = new Tag("a.starlink#starred","Click for oblivion!", href:"http://somewhere/far/away");
 
-			Dump(sample2);
+			Dump(linkshorthand);
 
 			//- creating an UL with child LI
 
-			var sample3 = new Tag("ul",
+			var nested = new Tag("ul",
 			    new Tag("li", "Look im an li!", @class:"hello", id:"hello"),
 				new Tag("li", "Look im another li!", @class:"awesome"));
 
-			Dump(sample3);
+			Dump(nested);
 
 			//- creating two sibling breaks
 
-			var sample4 = new Tag("br");
-			sample4 += new Tag("br");
+			var siblings = new Tag("br");
+			siblings += new Tag("br");
 
-			Dump(sample4);
+			Dump(siblings);
 
 			// doing the same thing but lazy via string implicit string conversion
 
-			Tag sample5 = "hr"; 
-			sample5 += "hr";
-			sample5 += (Tag)"hr.rainbow" + (Tag)"hr.doublerainbow";
+			Tag lazysiblings = "hr"; 
+			lazysiblings += "hr";
+			lazysiblings += (Tag)"hr.rainbow" + (Tag)"hr.doublerainbow";
 
-			Dump(sample5);
+			Dump(lazysiblings);
 
 			//- or create a image with class pretty and id main, and set the src to google and add a rainbow
 
-			var sample6 = ((Tag)"img.pretty#main").Attr("src","http://www.lolcats.com") + "hr.rainbow";
-			Dump(sample6);
+			var lazyWithAttributes = ((Tag)"img.pretty#main").Attr("src","http://www.lolcats.com") + "hr.rainbow";
+			Dump(lazyWithAttributes);
 	
 			//- some more samples
 
-			var stimulants = new []{ "Coffee","Crack", "Energy drink"};
+			var linq = new []{ "Coffee","Crack", "Energy drink"};
 
 			var 
 			html = 
-				new Tag("ul.CLASS#ID",
-				   	new Tag("li.CLASS#ID",  content: "CONTENT", name: "MYNAME", type: "MYTYPE"),
-					new Tag("li.CLASS#ID", "CONTENT", name: "MYNAME"));
+				new Tag("ul.starred#main",
+				   	new Tag("li.fav",  content: "CONTENT", name: "MYNAME", type: "MYTYPE"),
+					new Tag("li.fav", "CONTENT", name: "MYNAME"));
 
 			html += 
 				new Tag("div.CLASS#ID",content: "CONTENT", id: "myid", name:"NAME", href:"HREF", 
@@ -195,14 +197,20 @@ namespace Demo
 
 			html += "hr.CLASS";
 			html += new Tag("ul#toplist", 
-			                from 
-			                	stimulant 
-			                in 
-			                	stimulants 
-			                select 
-			                	new Tag("li",stimulant, @class:(stimulant=="Crack"?"illegal":"ok")));
+	                from 
+	                	stimulant 
+	                in 
+	                	linq 
+	                select 
+	                	new Tag("li",stimulant, @class:(stimulant=="Crack"?"illegal":"ok")));
 	
 			Dump(html);
+
+			Tag divwithclass = ".someclasss";
+			Dump(divwithclass);
+
+			Tag divwithid = "#someid";
+			Dump(divwithid);
 		}
 	}
 }
